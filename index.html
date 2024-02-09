@@ -3,7 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Fabric</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <div class="container-btn">
+      <button class="button_" id="adding-line" type="button">Add</button>
+      <button class="button_" id="Deactivate-line" type="button">
+        Deactivate
+      </button>
+      <button class="button_" id="resetButton">Reset Canvas</button>
+    </div>
+    <div id="canvas-container">
+      <!-- <canvas id="myCanvas"></canvas> -->
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <script src="./files/fabric.min.js"></script>
+    <script src="./index.js"></script>
+    <!-- <script src="./main.js"></script> -->
+  </body>
 </html>
