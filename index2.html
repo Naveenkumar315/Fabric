@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Line Length Display</title>
+    <!-- Include Konva library -->
+    <script src="https://cdn.jsdelivr.net/npm/konva@8.2.3/konva.min.js"></script>
+  </head>
+  <body>
+    <!-- Create a container for the canvas -->
+    <div id="container"></div>
+
+    <script>
+      // Create a new stage
+      const stage = new Konva.Stage({
+        container: "container",
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+
+      // Create a new layer
+      const layer = new Konva.Layer();
+      stage.add(layer);
+
+      // Array to store line objects and their lengths
+      const lines = [];
+
+      // Event listener to handle line drawing
+      let isDrawing = false;
+      let line;
+
+      stage.on("mousedown", (e) => {
+        isDrawing = true;
+        const pos = stage.getPointerPosition();
+        line = new Konva.Line({
+          points: [pos.x, pos.y, pos.x, pos.y],
+          stroke: "red",
+          strokeWidth: 3,
+        });
+        layer.add(line);
+      });
+
+      stage.on("mousemove", () => {
+        if (!isDrawing) {
+          return;
+        }
+        const pos = stage.getPointerPosition();
+        const points = line.points();
+        points[2] = pos.x;
+        points[3] = pos.y;
+        line.points(points);
+        layer.batchDraw();
+      });
+
+      stage.on("mouseup", () => {
+        debugger;
+        isDrawing = false;
+        const length = calculateLineLength(line);
+        const points = line.points();
+        const midX = (points[0] + points[2]) / 2;
+        const midY = (points[1] + points[3]) / 2;
+        const text = new Konva.Text({
+          x: midX,
+          y: midY,
+          text: length,
+          fontSize: 16,
+          fill: "black",
+          align: "center",
+        });
+        // Adjusting the text position based on its width
+        const textWidth = text.width();
+        text.offsetX(textWidth / 2);
+        layer.add(text);
+        lines.push({ line, text });
+        layer.batchDraw();
+      });
+
+      // Function to calculate the length of a line
+      function calculateLineLength(line) {
+        const [x1, y1, x2, y2] = line.points();
+        return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2).toFixed(2);
+      }
+
+      // Function to remove all lines and their length texts
+      function removeAllLines() {
+        debugger;
+        lines.forEach(({ line, text }) => {
+          line.destroy();
+          text.destroy();
+        });
+        lines.length = 0;
+        layer.batchDraw();
+      }
+
+      // Function to deactivate line drawing
+      function deactivateLineDrawing() {
+        debugger;
+        stage.off("mousedown");
+        stage.off("mousemove");
+        stage.off("mouseup");
+      }
+
+      let selectedShape = null;
+
+      // Add event listener to handle shape selection
+      layer.on("click", (e) => {
+        const shape = e.target;
+        if (shape !== stage) {
+          if (selectedShape) {
+            // Deselect previously selected shape
+            selectedShape.stroke(null); // Remove stroke color
+            selectedShape.text.fill(null); // Remove fill color of associated text
+          }
+          selectedShape = { line: shape, text: shape.text }; // Keep track of both line and text
+          // You may want to visually indicate the selected shape
+          selectedShape.line.stroke("blue"); // Apply stroke color to line
+          selectedShape.text.fill("blue"); // Apply fill color to text
+          layer.draw();
+        } else {
+          // If the user clicks on empty space, deselect the current shape
+          if (selectedShape) {
+            selectedShape.line.stroke(null); // Remove stroke color from line
+            selectedShape.text.fill(null); // Remove fill color from text
+            selectedShape = null;
+            layer.draw();
+          }
+        }
+      });
+
+      // Add keyboard event listeners to the document to handle shape deletion
+      document.addEventListener("keydown", (event) => {
+        // Check if the backspace or delete key is pressed
+        if (
+          (event.code === "Backspace" || event.code === "Delete") &&
+          selectedShape
+        ) {
+          // Delete the selected shape and associated text
+          deleteSelectedShape();
+        }
+      });
+
+      // Function to delete the selected shape and its associated text
+      function deleteSelectedShape() {
+        debugger;
+        selectedShape.line.destroy(); // Destroy the line
+        selectedShape.text.destroy(); // Destroy the associated text
+        layer.draw();
+        selectedShape = null;
+      }
+    </script>
+  </body>
+</html>

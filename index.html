@@ -7,18 +7,56 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="container-btn">
-      <button class="button_" id="adding-line" type="button">Add</button>
-      <button class="button_" id="Deactivate-line" type="button">
-        Deactivate
-      </button>
-      <button class="button_" id="resetButton">Reset Canvas</button>
-    </div>
-    <div id="canvas-container">
-      <!-- <canvas id="myCanvas"></canvas> -->
-      <canvas id="canvas"></canvas>
-    </div>
+    <div class="main-container">
+      <div>
+        <h2 style="margin-top: 10px;">Building Area Calculator</h2>
+      </div>
+      <div id="instructions" class="instruction" style="padding: 10px">
+        <h2>Instructions</h2>
+        <p>
+          <ol>Adding Points and Lines:</ol>
+          <ul>
+            <li>Click on the canvas to add points.</li>
+            <li>Click and drag the mouse to draw lines between points.</li>
+          </ul>
+          <ol>Drawing Lines:</ol>
+          <ul>
+            <li>After clicking on the canvas, drag the mouse to draw lines between points.</li>
+            <li>Release the mouse button to stop drawing lines.</li>
+          </ul>
+          <ol>Resetting the Canvas:</ol>
+          <ul>
+            <li>Press the "Reset" button to clear the canvas and start over.</li>
+          </ul>
+          <!-- <ol><li>Calculating Area:</li></ol>
+          <ul>
+            <li>The calculator will automatically calculate the area of the enclosed shape as you draw lines.</li>
+          </ul> -->
+          <ol>Note:</ol>
+          <ul>
+            <li>Ensure to complete the shape by connecting the last point with the first one to calculate the total area accurately.</li>
+          </ul>
+        </p>
+        <br>
+        <p>
+          <strong>Area: </strong>
+        </p>
+      </div>
+      
+      <div class="box">
+        <div class="container-btn">
+          <!-- <button style="background-color: #007bff !important;" class="button_" id="adding-line" type="button">Add</button> -->
+          <!-- <button class="button_" id="Deactivate-line" type="button">
+            Deactivate
+          </button> -->
+          <button style="background-color: #dc3545 !important;" class="button_" id="resetButton">Reset</button>
 
+        </div>
+        <div id="canvas-container">
+          <canvas id="canvas"></canvas>
+        </div>
+      </div>
+    </div>
     <script src="./files/fabric.min.js"></script>
     <script src="./index.js"></script>
     <!-- <script src="./main.js"></script> -->
